@@ -3,12 +3,17 @@
 import HomeCard from './HomeCard';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import MeetingModal from './MeetingModal';
 
 const MeetingTypeList = () => {
   const [meetingState, setMeetingState] = useState<
     'isScheduleStream' | 'isJoiningStream' | 'isInstantStream' | undefined
   >();
   const router = useRouter();
+
+  const createStream=()=>{
+    
+  }
 
   return (
     <section className='grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4'>
@@ -39,6 +44,15 @@ const MeetingTypeList = () => {
         description="via invitation link"
         handleClick={() => setMeetingState('isJoiningStream')}
         className='bg-yellow-1'
+      />
+
+      <MeetingModal 
+        isOpen={meetingState==='isInstantStream'}
+        onClose={()=>setMeetingState(undefined)}
+        title="Start an Instant Stream"
+        className="text-center"
+        buttonText="Start Stream"
+        handleClick={createStream}
       />
     </section>
   );
