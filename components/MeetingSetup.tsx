@@ -47,14 +47,14 @@ const MeetingSetup = ({
   if (callTimeNotArrived)
     return (
       <Alert
-        title={`Your Meeting has not started yet. It is scheduled for ${callStartsAt.toLocaleString()}`}
+        title={`Your Stream has not started yet. It is scheduled for ${callStartsAt.toLocaleString()}`}
       />
     );
 
   if (callHasEnded)
     return (
       <Alert
-        title="The call has been ended by the host"
+        title="The stream has been ended by the host"
         iconUrl="/icons/call-ended.svg"
       />
     );
@@ -82,7 +82,7 @@ const MeetingSetup = ({
           setIsSetupComplete(true);
         }}
       >
-        Join meeting
+        Join Stream
       </Button>
     </div>
   );

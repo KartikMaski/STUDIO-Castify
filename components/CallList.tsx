@@ -1,7 +1,6 @@
 'use client';
 
 import { Call, CallRecording } from '@stream-io/video-react-sdk';
-
 import Loader from './Loader';
 import { useGetCalls } from '@/hooks/useGetCalls';
 import MeetingCard from './MeetingCard';
@@ -10,9 +9,36 @@ import { useRouter } from 'next/navigation';
 
 const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
   const router = useRouter();
-  const { endedCalls, upcomingCalls, callRecordings, isLoading } =
-    useGetCalls();
+  const { endedCalls, upcomingCalls, callRecordings, isLoading } = useGetCalls();
   const [recordings, setRecordings] = useState<CallRecording[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null); // To capture error messages
+
+  // Helper function to fetch recordings with retry logic to handle rate limits
+  const fetchRecordings = async (retryCount = 0) => {
+    const MAX_RETRIES = 3;
+    const RETRY_DELAY = 1000; // 1 second
+
+    try {
+      const callData = await Promise.all(
+        callRecordings?.map((stream) => stream.queryRecordings()) ?? []
+      );
+
+      const filteredRecordings = callData
+        .filter((call) => call.recordings.length > 0)
+        .flatMap((call) => call.recordings);
+
+      setRecordings(filteredRecordings);
+    } catch (error: any) {
+      if (error.code === 9 && retryCount < MAX_RETRIES) {
+        console.warn(`Rate limit hit. Retrying in ${RETRY_DELAY}ms...`);
+        await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
+        return fetchRecordings(retryCount + 1);
+      } else {
+        setErrorMessage('Failed to fetch recordings. Please try again later.');
+        console.error('Error fetching recordings:', error);
+      }
+    }
+  };
 
   const getCalls = () => {
     switch (type) {
@@ -30,9 +56,9 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
   const getNoCallsMessage = () => {
     switch (type) {
       case 'ended':
-        return 'No Previous Calls';
+        return 'No Previous Streams';
       case 'upcoming':
-        return 'No Upcoming Calls';
+        return 'No Upcoming Streams';
       case 'recordings':
         return 'No Recordings';
       default:
@@ -41,18 +67,6 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
   };
 
   useEffect(() => {
-    const fetchRecordings = async () => {
-      const callData = await Promise.all(
-        callRecordings?.map((meeting) => meeting.queryRecordings()) ?? [],
-      );
-
-      const recordings = callData
-        .filter((call) => call.recordings.length > 0)
-        .flatMap((call) => call.recordings);
-
-      setRecordings(recordings);
-    };
-
     if (type === 'recordings') {
       fetchRecordings();
     }
@@ -65,38 +79,40 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
 
   return (
     <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
-      {calls && calls.length > 0 ? (
-        calls.map((meeting: Call | CallRecording) => (
+      {errorMessage ? (
+        <h1 className="text-2xl font-bold text-red-500">{errorMessage}</h1>
+      ) : calls && calls.length > 0 ? (
+        calls.map((stream: Call | CallRecording) => (
           <MeetingCard
-            key={(meeting as Call).id}
+            key={(stream as Call).id}
             icon={
               type === 'ended'
                 ? '/icons/previous.svg'
                 : type === 'upcoming'
-                  ? '/icons/upcoming.svg'
-                  : '/icons/recordings.svg'
+                ? '/icons/upcoming.svg'
+                : '/icons/recordings.svg'
             }
             title={
-              (meeting as Call).state?.custom?.description ||
-              (meeting as CallRecording).filename?.substring(0, 20) ||
+              (stream as Call).state?.custom?.description ||
+              (stream as CallRecording).filename?.substring(0, 20) ||
               'No Description'
             }
             date={
-              (meeting as Call).state?.startsAt?.toLocaleString() ||
-              (meeting as CallRecording).start_time?.toLocaleString()
+              (stream as Call).state?.startsAt?.toLocaleString() ||
+              (stream as CallRecording).start_time?.toLocaleString()
             }
             isPreviousMeeting={type === 'ended'}
             link={
               type === 'recordings'
-                ? (meeting as CallRecording).url
-                : `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${(meeting as Call).id}`
+                ? (stream as CallRecording).url
+                : `${process.env.NEXT_PUBLIC_BASE_URL}/stream/${(stream as Call).id}`
             }
             buttonIcon1={type === 'recordings' ? '/icons/play.svg' : undefined}
             buttonText={type === 'recordings' ? 'Play' : 'Start'}
             handleClick={
               type === 'recordings'
-                ? () => router.push(`${(meeting as CallRecording).url}`)
-                : () => router.push(`/meeting/${(meeting as Call).id}`)
+                ? () => router.push(`${(stream as CallRecording).url}`)
+                : () => router.push(`/stream/${(stream as Call).id}`)
             }
           />
         ))
