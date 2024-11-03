@@ -158,7 +158,7 @@ const MeetingTypeList = () => {
         className="text-center"
         buttonText="Join Stream"
         handleClick={() => router.push(values.link)}
-      >
+      > 
         <Input
           placeholder="Stream link"
           onChange={(e) => setValues({ ...values, link: e.target.value })}

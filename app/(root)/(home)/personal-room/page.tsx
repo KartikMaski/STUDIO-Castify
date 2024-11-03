@@ -34,12 +34,17 @@ const PersonalRoom = () => {
   const { toast } = useToast();
 
   const meetingId = user?.id;
+  
+  // Set the base URL to localhost if not defined
+  const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/meeting/${meetingId}?personal=true`;
 
+  // Fetch the call by meeting ID, if it exists
   const { call } = useGetCallById(meetingId!);
 
   const startRoom = async () => {
     if (!client || !user) return;
 
+    // Create a new call or retrieve the existing one
     const newCall = client.call("default", meetingId!);
 
     if (!call) {
@@ -53,13 +58,11 @@ const PersonalRoom = () => {
     router.push(`/meeting/${meetingId}?personal=true`);
   };
 
-  const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${meetingId}?personal=true`;
-
   return (
     <section className="flex size-full flex-col gap-10 text-white">
       <h1 className="text-xl font-bold lg:text-3xl">Personal Streaming Room</h1>
       <div className="flex w-full flex-col gap-8 xl:max-w-[900px]">
-        <Table title="Topic" description={`${user?.username}'s Streaming Room`} />
+        <Table title="Topic" description={`${user?.username || user?.fullName || 'Guest'}'s Streaming Room`} />
         <Table title="Meeting ID" description={meetingId!} />
         <Table title="Invite Link" description={meetingLink} />
       </div>
