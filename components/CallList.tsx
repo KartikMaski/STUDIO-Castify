@@ -14,19 +14,19 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null); // To capture error messages
 
   // Helper function to fetch recordings with retry logic to handle rate limits
-  const fetchRecordings = async (retryCount = 0) => {
+  const fetchRecordings = async (retryCount = 0): Promise<void> => {
     const MAX_RETRIES = 3;
     const RETRY_DELAY = 1000; // 1 second
-
+  
     try {
       const callData = await Promise.all(
         callRecordings?.map((stream) => stream.queryRecordings()) ?? []
       );
-
+  
       const filteredRecordings = callData
         .filter((call) => call.recordings.length > 0)
         .flatMap((call) => call.recordings);
-
+  
       setRecordings(filteredRecordings);
     } catch (error: any) {
       if (error.code === 9 && retryCount < MAX_RETRIES) {
@@ -39,6 +39,7 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
       }
     }
   };
+  
 
   const getCalls = () => {
     switch (type) {
