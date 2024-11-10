@@ -6,20 +6,21 @@ import MobileNav from './MobileNav';
 
 const Navbar = () => {
   return (
-    <nav className="flex-between fixed z-50 w-full bg-dark-1 px-6 py-4 lg:px-10">
-      <Link href="/" className="flex items-center gap-1">
-        <Image
-          src="/icons/logo.svg"
-          width={40}
-          height={40}
-          alt="Streamooo logo"
+    <nav className="flex items-center justify-between fixed z-50 w-full bg-dark-1 px-0 py-3 lg:px-10">
+      <Link href="/" className="flex items-center gap-0">
+        {/* <Image
+          src="/icons/logo.png"
+          width={50}
+          height={50}
+          alt="Castify logo"
           className="max-sm:size-10"
-        />
-        <p className="text-[26px] px-2 font-extrabold text-white max-sm:hidden">
-          Streamooo
+        /> */}
+        <p className="text-white font-extrabold text-[26px] px-2 max-sm:hidden">
+          <span className="text-[32px] text-pink-500">STUDIO</span> 
+          <span className="text-[15px] text-white"> by CASTIFY</span>
         </p>
       </Link>
-      <div className="flex-between gap-5  ">
+      <div className="flex items-center gap-5">
         <SignedIn>
           <UserButton afterSignOutUrl="/sign-in" />
         </SignedIn>

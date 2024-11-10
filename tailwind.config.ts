@@ -20,29 +20,23 @@ const config = {
     extend: {
       colors: {
         dark: {
-          1: '#1C1F2E',
-          2: '#161925',
+          1: '#140F26',
+          2: '#251A39',
           3: '#252A41',
           4: '#1E2757',
         },
         blue: {
-          1: '#0E78F9',
-          2: '#B17457'
+          1: '#6A42C2',
+          2: '#B17457',  
         },
         sky: {
           1: '#C9DDFF',
           2: '#ECF0FF',
           3: '#F5FCFF',
         },
-        red: {
-          1: '#982B1C',
-        },
-        navy: {
-          1: '#16325B',
-        },
-        teal: {
-          1: '#629584',
-        },
+        card:{
+          1:'#19132B'
+        }
       },
       keyframes: {
         'accordion-down': {
@@ -59,7 +53,7 @@ const config = {
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
       backgroundImage: {
-        hero: "url('/images/hero-background.webp')",
+        hero: "url('/images/image.png')",
       },
     },
   },

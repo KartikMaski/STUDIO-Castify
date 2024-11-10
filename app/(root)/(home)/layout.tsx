@@ -5,7 +5,7 @@ import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 
 export const metadata: Metadata = {
-  title: 'Streamooo',
+  title: 'Castify-Streamer',
   description: 'A workspace for you, powered by Stream Chat and Clerk.',
 };
 

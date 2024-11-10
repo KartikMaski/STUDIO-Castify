@@ -60,7 +60,7 @@ const MeetingModal = ({
               />
             )}{" "}
             &nbsp;
-            {buttonText || "Schedule Meeting"}
+            {buttonText || "Schedule Stream"}
           </Button>
         </div>
       </DialogContent>
