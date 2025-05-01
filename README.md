@@ -102,3 +102,18 @@ Clone the repository and install dependencies:
 git clone https://github.com/KartikMaski/STUDIO-Castify.git
 cd STUDIO-Castify
 npm install
+
+
+## 🧪 Set Environment Variables
+
+Create a `.env` file in the root directory and add:
+
+```env
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+CLERK_SECRET_KEY=your_clerk_secret_key
+
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+
+NEXT_PUBLIC_STREAM_API_KEY=your_stream_api_key
+STREAM_SECRET_KEY=your_stream_secret_key
