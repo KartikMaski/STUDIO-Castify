@@ -117,3 +117,54 @@ NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
 
 NEXT_PUBLIC_STREAM_API_KEY=your_stream_api_key
 STREAM_SECRET_KEY=your_stream_secret_key
+
+
+## 🧬 Run the App
+
+Run the development server:
+
+```bash
+npm run dev
+
+
+## 🌐 Deployment (Vercel)
+The app is configured for zero-config deployment on Vercel:
+
+Push your code to GitHub
+
+Connect the repo on Vercel
+
+Add your environment variables in the Vercel dashboard
+
+Deploy 🚀
+
+🔗 Live URL: https://studio-castify.vercel.app
+
+
+🕸️ Project Structure
+bash
+Copy
+Edit
+├── app/                  # App routes
+├── components/           # UI components
+├── constants/            # Static data & enums
+├── hooks/                # Custom React hooks
+├── providers/            # Context providers (auth, theme, etc.)
+├── public/               # Static assets
+├── styles/               # Tailwind and global CSS
+├── utils/                # Helper functions
+├── .env                  # Environment variables
+└── README.md
+📸 Screenshots
+Add screenshots or GIFs here to showcase the UI, features, or mobile view.
+
+📽️ Tutorial
+Looking for a step-by-step guide?
+📺 Follow the tutorial on YouTube – Coming Soon 🎬
+
+📬 Contact
+Made with ❤️ by @KartikMaski
+
+Feel free to open issues or pull requests — contributions are always welcome!
+
+
